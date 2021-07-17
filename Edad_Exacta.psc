@@ -1,60 +1,42 @@
 Proceso Edad_Exacta
 	Definir Edad, AnioActual, MesActual, DiaActual Como entero;
-	Definir AnioNacimiento, MesNacimiento, DiaNacimiento Como Entero;
+	Definir AnioNacimiento, MesNacimiento, DiaNacimiento Como entero;
 	Definir nombre Como Caracter;
-	Definir dias, Meses Como Entero;
+	Definir dias, Meses, nueva_edad Como Entero;
 	Escribir "ingresa tu nombre";
 	Leer nombre;
-	escribir "Ingrese la fecha actual en año, mes y dìa";
-	leer AnioActual, MesActual, DiaActual;
-	//si se escribe mal la fecha
 	
-	Repetir
-		si AnioActual>2021 y AnioActual<1900 Entonces
-			
-			Escribir "Has introducido un digito incorrecto";
-		FinSi
-		Escribir  "Ingrese nuevamente el año actual";
-		Leer AnioActual;
-	Hasta Que AnioActual<=2021 y AnioActual>=1900
-	Repetir
-		si MesActual<1 Y MesActual>12 Entonces
-			
-		FinSi
-		Escribir "introduce nuevamente el mes actual";
-		leer MesActual;
-	Hasta Que MesActual>=1 y MesActual<=12;
-	Repetir
-		si DiaActual<1 y DiaActual>31 Entonces
-			Escribir "Has introducido un digito incorrecto";
-		FinSi
-		Escribir "Introduce nuevamente el dia actual";
-		leer DiaActual;
-	Hasta Que DiaActual>=1 o DiaActual<=31
+	AnioActual<-2021;
+	MesActual<-7;
+	DiaActual<-19;
+	nueva_edad<-0;
 	
-
+	// Capturamos datos de entrada
 	Escribir "Ingrese su fecha de nacimiento en año, mes y dìa";
-	Leer AnioNacimiento, MesNacimiento, DiaNacimiento;
-	// ingreso mal la fecha
-	Repetir
-		si MesNacimiento<1 Y MesNacimiento>12 Entonces
-			
-			Escribir "Has introducido un digito incorrecto";
-		FinSi
-		Escribir "introduce nuevamente tu mes de nacimiento";
-		leer MesNacimiento;
-	Hasta Que MesNacimiento>=1 y MesNacimiento<=12;
+	AnioNacimiento<-validarDato ();
+	MesNacimiento<-validarDato();
+	DiaNacimiento<-validarDato();
 	
 	Repetir
-		si AnioActual=i Entonces
-			Escribir "Has introducido un digito incorrecto";
-
+		Si (AnioNacimiento<1890) O (AnioNacimiento>AnioActual) Entonces
+			Borrar Pantalla;
+			Escribir "ingrese nuevamente su año de nacimiento";
+			Leer AnioNacimiento;
 		FinSi
-	Hasta Que AnioActual>=1900 o AnioActual<=2021;
+		
+		
+	Hasta Que AnioNacimiento>=1890 o AnioNacimiento<=2021
 	
-	Edad <- AnioActual - AnioNacimiento;
+	Repetir
+		si MesNacimiento<1 o MesNacimiento>12 Entonces
+			Borrar Pantalla;
+			Escribir "ingrese nuevamente su mes de nacimiento";
+			Leer MesNacimiento;
+		FinSi
+	Hasta Que MesNacimiento>=1 o MesNacimiento<=12;
+	
 	si MesNacimiento>MesActual Entonces
-		Edad <- Edad-1;
+		Edad <- edad-1;
 	SiNo
 		si MesActual==MesNacimiento Entonces
 			si MesNacimiento>MesActual Entonces
@@ -66,16 +48,22 @@ Proceso Edad_Exacta
 			FinSi
 		FinSi
 	FinSi
-	Meses <- MesActual-MesNacimiento;
+	
+	
 	si MesNacimiento>MesActual Entonces
 		Meses <-12+MesActual-MesNacimiento;
 	FinSi
-	dias <- DiaActual-DiaNacimiento;
-	si DiaNacimiento>DiaActual Entonces
-		dias <- DiaNacimiento-DiaActual;
-
-	FinSi
 	
+	Repetir
+		si DiaNacimiento>31 y DiaNacimiento<1 Entonces
+			Escribir "ingrese nuevamente su día de nacimiento";
+			Leer DiaNacimiento;
+		FinSi
+	Hasta Que DiaNacimiento<=31 y DiaNacimiento>=1
+	
+	edad <- AnioActual-AnioNacimiento;
+	Meses<-MesActual-MesNacimiento;
+	dias <- DiaActual-DiaNacimiento;
 	
 	
 	Escribir nombre, " Tu edad actual es: " , edad," Años ";
@@ -84,4 +72,34 @@ Proceso Edad_Exacta
 	
 	
 	
+	
+	
 FinProceso
+SubProceso dato<-validarDato()
+	Definir num,sub_cadena Como Cadena;
+	Definir validarNum Como Logico;
+	Definir long,j, dato Como Entero;
+	
+	Repetir
+		//Escribir "Ingrese un numero";
+		Leer num;
+		
+		long<-Longitud(num);
+		validarNum<-Verdadero;
+		
+		Para j<-0 Hasta long-1 Con Paso 1 Hacer
+			sub_cadena<-Subcadena(num,j,j);
+			
+			Si sub_cadena<>'0' Y sub_cadena<>'1' Y sub_cadena<>'2' Y sub_cadena<>'3' Y sub_cadena<>'4' Y sub_cadena<>'5' Y sub_cadena<>'6' Y sub_cadena<>'7' Y sub_cadena<>'8' Y sub_cadena<>'9' Entonces
+				validarNum<-Falso;
+			FinSi
+			
+		FinPara
+		
+		Si validarNum==Falso Entonces
+			Escribir "Se requiere un numero Entero, por favor vuelva a intentarlo";
+		FinSi
+	Hasta Que validarNum==Verdadero
+	
+	dato<-ConvertirANumero(num);
+FinSubProceso
